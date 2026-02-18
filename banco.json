@@ -1,0 +1,798 @@
+{
+  "config": {
+    "nomeLoja": "Niko Trudel",
+    "moeda": "BRL",
+    "whatsapp": ""
+  },
+  "categorias": {
+     "combos_promocoes": {
+      "nome": "Combos & Promoções",
+      "slug": "combos-promocoes",
+      "ordem": 1,
+      "ativa": true
+    },
+    "trudels": {
+      "nome": "Trudels",
+      "slug": "trudels",
+      "ordem": 2,
+      "ativa": true
+    },
+    "pizzas_massas": {
+      "nome": "Pizzas & Massas",
+      "slug": "pizzas-massas",
+      "ordem": 3,
+      "ativa": true
+    },
+    "sorvetes_acai": {
+      "nome": "Sorvetes & Açaí",
+      "slug": "sorvetes-acai",
+      "ordem": 4,
+      "ativa": true
+    },
+    "salgados_brownies": {
+      "nome": "Salgados & Brownies",
+      "slug": "salgados-brownies",
+      "ordem": 5,
+      "ativa": true
+    },
+    "paes": {
+      "nome": "Pães",
+      "slug": "paes",
+      "ordem": 6,
+      "ativa": true
+    },
+    "niko_festas": {
+      "nome": "Niko Festas",
+      "slug": "niko-festas",
+      "ordem": 7,
+      "ativa": true
+    },
+    "bebidas": {
+      "nome": "Bebidas",
+      "slug": "bebidas",
+      "ordem": 8,
+      "ativa": true
+    }   
+  },
+  "subcategorias": {
+    "festas_salgadinhos": {
+      "categoria": "niko_festas",
+      "nome": "Salgadinhos",
+      "ordem": 1,
+      "ativa": true
+    },
+    "festas_sanduiches": {
+      "categoria": "niko_festas",
+      "nome": "Sanduíches",
+      "ordem": 2,
+      "ativa": true
+    },
+    "festas_mini_trudel": {
+      "categoria": "niko_festas",
+      "nome": "Mini Trudel",
+      "ordem": 3,
+      "ativa": true
+    },
+    "festas_diversos": {
+      "categoria": "niko_festas",
+      "nome": "Diversos",
+      "ordem": 4,
+      "ativa": true
+    },
+    "festas_brigadeiro": {
+      "categoria": "niko_festas",
+      "nome": "Brigadeiro",
+      "ordem": 5,
+      "ativa": true
+    },
+    "festas_adicionais": {
+      "categoria": "niko_festas",
+      "nome": "Adicionais",
+      "ordem": 6,
+      "ativa": true
+    },
+    "bebidas_geladas": {
+      "categoria": "bebidas",
+      "nome": "Geladas",
+      "ordem": 1,
+      "ativa": true
+    },
+    "bebidas_quentes": {
+      "categoria": "bebidas",
+      "nome": "Quentes",
+      "ordem": 2,
+      "ativa": true
+    }
+  },
+  "produtos": {
+    "trudel_simples_modelo": {
+      "categoria": "trudels",
+      "nome": "",
+      "descricao": "",
+      "preco": 0,
+      "imagem": "",
+      "tipo": "simples",
+      "destaque": false,
+      "ativo": true
+    },
+    "monte_trudel_doce": {
+      "categoria": "trudels",
+      "nome": "Monte seu Trudel - Doce",
+      "tipo": "montavel",
+      "ativo": true,
+      "grupos": {
+        "massa": {
+          "titulo": "Massa",
+          "ordem": 1,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "recheio": {
+          "titulo": "Recheio",
+          "ordem": 2,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "topping": {
+          "titulo": "Topping",
+          "ordem": 3,
+          "obrigatorio": false,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "sorvete": {
+          "titulo": "Sorvete",
+          "ordem": 4,
+          "obrigatorio": false,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "fruta_palito": {
+          "titulo": "Adicional - Fruta no Palito",
+          "ordem": 5,
+          "obrigatorio": false,
+          "tipoSelecao": "radio",
+          "opcoes": {
+            "nenhum": {
+              "nome": "Sem fruta",
+              "preco": 0
+            },
+            "morango": {
+              "nome": "Morango",
+              "preco": 6.00
+            },
+            "banana": {
+              "nome": "Banana",
+              "preco": 3.00
+            }
+          }
+        }
+      }
+    },
+    "monte_trudel_salgado": {
+      "categoria": "trudels",
+      "nome": "Monte seu Trudel - Salgado",
+      "tipo": "montavel",
+      "ativo": true,
+      "grupos": {
+        "massa": {
+          "titulo": "Massa",
+          "ordem": 1,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "recheio": {
+          "titulo": "Recheio",
+          "ordem": 2,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "topping": {
+          "titulo": "Topping",
+          "ordem": 3,
+          "obrigatorio": false,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        }
+      }
+    },
+    "pizza_modelo": {
+      "categoria": "pizzas_massas",
+      "nome": "",
+      "descricao": "",
+      "preco": 0,
+      "imagem": "",
+      "tipo": "simples",
+      "ativo": true
+    },
+    "monte_sua_massa": {
+      "categoria": "pizzas_massas",
+      "nome": "Monte sua Massa",
+      "tipo": "montavel",
+      "ativo": true,
+      "grupos": {
+        "massa": {
+          "titulo": "Tipo de Massa",
+          "ordem": 1,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "molho": {
+          "titulo": "Molho",
+          "ordem": 2,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "proteina": {
+          "titulo": "Proteína",
+          "ordem": 3,
+          "obrigatorio": false,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "adicionais": {
+          "titulo": "Adicionais",
+          "ordem": 4,
+          "obrigatorio": false,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        }
+      }
+    },
+    "acai_modelo": {
+      "categoria": "sorvetes_acai",
+      "nome": "",
+      "descricao": "",
+      "preco": 0,
+      "imagem": "",
+      "tipo": "simples",
+      "ativo": true
+    },
+    "monte_seu_sorvete": {
+      "categoria": "sorvetes_acai",
+      "nome": "Monte seu Sorvete",
+      "tipo": "montavel",
+      "ativo": true,
+      "grupos": {
+        "recipiente": {
+          "titulo": "Recipiente",
+          "ordem": 1,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "sabor": {
+          "titulo": "Sabor",
+          "ordem": 2,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "adicional": {
+          "titulo": "Adicional",
+          "ordem": 3,
+          "obrigatorio": false,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        }
+      }
+    },
+    "salgado_modelo": {
+      "categoria": "salgados_brownies",
+      "nome": "",
+      "descricao": "",
+      "preco": 0,
+      "imagem": "",
+      "tipo": "simples",
+      "ativo": true
+    },
+    "trudel_dog": {
+      "categoria": "salgados_brownies",
+      "nome": "Trudel Dog",
+      "descricao": "Salsicha, queijo mussarela gratinado, ketchup, maionese e batata palha.",
+      "preco": 0,
+      "imagem": "",
+      "tipo": "opcional",
+      "ativo": true,
+      "grupos": {
+        "adicional": {
+          "titulo": "Cobertura adicional (+2,00)",
+          "ordem": 1,
+          "obrigatorio": false,
+          "tipoSelecao": "radio",
+          "opcoes": {
+            "nenhum": {
+              "nome": "Sem adicional",
+              "preco": 0
+            },
+            "cheddar": {
+              "nome": "Cheddar",
+              "preco": 2.00
+            },
+            "requeijao": {
+              "nome": "Requeijão",
+              "preco": 2.00
+            },
+            "creme_cheese": {
+              "nome": "Creme Cheese",
+              "preco": 2.00
+            },
+            "bacon": {
+              "nome": "Bacon",
+              "preco": 2.00
+            },
+            "calabresa": {
+              "nome": "Calabresa",
+              "preco": 2.00
+            }
+          }
+        }
+      }
+    },
+    "brownie_modelo": {
+      "categoria": "salgados_brownies",
+      "nome": "",
+      "descricao": "",
+      "preco": 0,
+      "imagem": "",
+      "tipo": "simples",
+      "ativo": true
+    },
+    "brownie_sorvete": {
+      "categoria": "salgados_brownies",
+      "nome": "Brownie + Sorvete",
+      "tipo": "montavel",
+      "ativo": true,
+      "grupos": {
+        "base": {
+          "titulo": "Base do Brownie",
+          "ordem": 1,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "sabor_sorvete": {
+          "titulo": "Sabor do Sorvete",
+          "ordem": 2,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        },
+        "adicional": {
+          "titulo": "Adicional",
+          "ordem": 3,
+          "obrigatorio": false,
+          "tipoSelecao": "radio",
+          "opcoes": {}
+        }
+      }
+    },
+    "festas_salgadinhos": {
+      "categoria": "niko_festas",
+      "subcategoria": "festas_salgadinhos",
+      "nome": "Salgadinhos - Monte o Seu",
+      "tipo": "montavel",
+      "descricao": "Pedido mínimo de 10 unidades por item.",
+      "pedidoMinimo": 10,
+      "ativo": true,
+      "grupos": {
+        "quantidade": {
+          "titulo": "Escolha a Quantidade",
+          "ordem": 1,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {
+            "50": {
+              "nome": "50 Unidades",
+              "preco": 185.00
+            },
+            "100": {
+              "nome": "100 Unidades",
+              "preco": 270.00
+            }
+          }
+        },
+        "tipo": {
+          "titulo": "Escolha os Tipos",
+          "ordem": 2,
+          "obrigatorio": true,
+          "tipoSelecao": "checkbox",
+          "controleQuantidade": true,
+          "minimoPorItem": 10,
+          "incremento": 10,
+          "somaDeveFecharQuantidade": true,
+          "opcoes": {
+            "mini_pizza_mussarela": {
+              "nome": "Mini Pizza Mussarela"
+            },
+            "mini_pizza_mista": {
+              "nome": "Mini Pizza Mista"
+            },
+            "mini_pizza_calabresa": {
+              "nome": "Mini Pizza Calabresa"
+            },
+            "mini_pizza_bacon": {
+              "nome": "Mini Pizza Bacon"
+            },
+            "mini_pizza_frango": {
+              "nome": "Mini Pizza Frango"
+            },
+            "esfirra_frango": {
+              "nome": "Esfirra de Frango"
+            },
+            "travesseiro_carne": {
+              "nome": "Travesseiro de Carne"
+            },
+            "bolinha_queijo": {
+              "nome": "Bolinha de Queijo"
+            },
+            "enroladinho_salsicha": {
+              "nome": "Enroladinho de Salsicha"
+            },
+            "jacare": {
+              "nome": "Jacaré"
+            },
+            "misto": {
+              "nome": "Misto"
+            }
+          }
+        }
+      }
+    },
+    "sanduiche_natural": {
+      "categoria": "niko_festas",
+      "subcategoria": "festas_sanduiches",
+      "nome": "Sanduíche Natural",
+      "descricao": "Pão de forma com patê de Atum e cenoura em raspas ou patê de Frango, milho e cebola.",
+      "preco": 4.50,
+      "tipo": "simples",
+      "ativo": true
+    },
+    "mini_kikao": {
+      "categoria": "niko_festas",
+      "subcategoria": "festas_sanduiches",
+      "nome": "Mini Kikão",
+      "descricao": "Pão bisnaga com molho artesanal, salsicha, ketchup, maionese e batata palha.",
+      "preco": 3.00,
+      "tipo": "simples",
+      "ativo": true
+    },
+    "mini_hamburguer": {
+      "categoria": "niko_festas",
+      "subcategoria": "festas_sanduiches",
+      "nome": "Mini Hambúrguer",
+      "descricao": "Pão mini, hambúrguer artesanal, queijo, presunto, tomate e alface.",
+      "preco": 5.00,
+      "tipo": "simples",
+      "ativo": true
+    },
+    "mini_trudel_festa": {
+      "categoria": "niko_festas",
+      "subcategoria": "festas_mini_trudel",
+      "nome": "Mini Trudel - Monte o Seu",
+      "tipo": "montavel",
+      "descricao": "Pedido mínimo de 10 unidades por item.",
+      "pedidoMinimo": 10,
+      "ativo": true,
+      "grupos": {
+        "quantidade": {
+          "titulo": "Escolha a Quantidade",
+          "ordem": 1,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {
+            "30": {
+              "nome": "30 Unidades",
+              "preco": 180.00
+            },
+            "50": {
+              "nome": "50 Unidades",
+              "preco": 280.00
+            }
+          }
+        },
+        "massa": {
+          "titulo": "Escolha a Massa",
+          "ordem": 2,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {
+            "salgada": {
+              "nome": "Massa Salgada"
+            },
+            "tradicional": {
+              "nome": "Massa Tradicional"
+            }
+          }
+        },
+        "recheio": {
+          "titulo": "Escolha os Recheios",
+          "ordem": 3,
+          "obrigatorio": true,
+          "tipoSelecao": "checkbox",
+          "controleQuantidade": true,
+          "minimoPorItem": 10,
+          "incremento": 10,
+          "somaDeveFecharQuantidade": true,
+          "opcoes": {
+            "beijinho": {
+              "nome": "Beijinho (caseiro)"
+            },
+            "brigadeiro": {
+              "nome": "Brigadeiro (caseiro)"
+            },
+            "doce_leite": {
+              "nome": "Doce de Leite"
+            },
+            "galak": {
+              "nome": "Galak"
+            },
+            "cheddar": {
+              "nome": "Cheddar"
+            },
+            "requeijao": {
+              "nome": "Requeijão"
+            }
+          }
+        },
+        "topping": {
+          "titulo": "Escolha o Topping",
+          "ordem": 4,
+          "obrigatorio": false,
+          "tipoSelecao": "radio",
+          "opcoes": {
+            "coco": {
+              "nome": "Coco Ralado"
+            },
+            "confete_colorido": {
+              "nome": "Confete Colorido"
+            },
+            "confete_pistache": {
+              "nome": "Confete de Pistache"
+            },
+            "choco_power": {
+              "nome": "Choco Power Ball"
+            },
+            "marshmallow": {
+              "nome": "Marshmallow"
+            },
+            "calabresa": {
+              "nome": "Calabresa"
+            },
+            "bacon": {
+              "nome": "Bacon"
+            },
+            "doritos": {
+              "nome": "Doritos"
+            }
+          }
+        }
+      }
+    },
+    "diversos_festa": {
+      "categoria": "niko_festas",
+      "subcategoria": "festas_diversos",
+      "nome": "Diversos - Monte o Seu",
+      "tipo": "montavel",
+      "descricao": "Pedido mínimo de 25 unidades por item. Mínimo 5 unidades por sabor.",
+      "pedidoMinimo": 25,
+      "ativo": true,
+      "grupos": {
+        "quantidade": {
+          "titulo": "Escolha a Quantidade",
+          "ordem": 1,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {
+            "25": {
+              "nome": "25 Unidades",
+              "preco": 68.00
+            },
+            "50": {
+              "nome": "50 Unidades",
+              "preco": 115.00
+            }
+          }
+        },
+        "base": {
+          "titulo": "Escolha a Base",
+          "ordem": 2,
+          "obrigatorio": true,
+          "tipoSelecao": "checkbox",
+          "limiteDinamicoPorQuantidade": {
+            "25": 1,
+            "50": 2
+          },
+          "opcoes": {
+            "barquete": {
+              "nome": "Barquete"
+            },
+            "tortalete": {
+              "nome": "Tortalete"
+            },
+            "canudinho": {
+              "nome": "Canudinho"
+            }
+          }
+        },
+        "sabor": {
+          "titulo": "Escolha os Sabores",
+          "ordem": 3,
+          "obrigatorio": true,
+          "tipoSelecao": "checkbox",
+          "controleQuantidade": true,
+          "minimoPorItem": 5,
+          "incremento": 5,
+          "somaDeveFecharQuantidade": true,
+          "opcoes": {
+            "creme_queijo": {
+              "nome": "Creme de Queijo"
+            },
+            "creme_misto": {
+              "nome": "Creme Misto (Queijo e Presunto)"
+            },
+            "atum": {
+              "nome": "Atum"
+            },
+            "brigadeiro": {
+              "nome": "Brigadeiro"
+            },
+            "doce_leite": {
+              "nome": "Doce de Leite"
+            }
+          }
+        },
+        "topo": {
+          "titulo": "Escolha o Topo",
+          "ordem": 4,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {
+            "queijo": {
+              "nome": "Topo de Queijo"
+            },
+            "azeitona": {
+              "nome": "Azeitona"
+            },
+            "oregano": {
+              "nome": "Orégano"
+            },
+            "amendoim": {
+              "nome": "Amendoim Granulado"
+            },
+            "confete_colorido": {
+              "nome": "Confete Colorido"
+            },
+            "choco_power": {
+              "nome": "Choco Power Ball"
+            },
+            "coco": {
+              "nome": "Coco Ralado"
+            }
+          }
+        }
+      }
+    },
+    "brigadeiro_festa": {
+      "categoria": "niko_festas",
+      "subcategoria": "festas_brigadeiro",
+      "nome": "Brigadeiro - Monte o Seu",
+      "descricao": "Pedido mínimo de 25 unidades por item.",
+      "pedidoMinimo": 25,
+      "tipo": "montavel",
+      "ativo": true,
+      "grupos": {
+        "quantidade": {
+          "titulo": "Escolha a Quantidade",
+          "ordem": 1,
+          "obrigatorio": true,
+          "tipoSelecao": "radio",
+          "opcoes": {
+            "25": {
+              "nome": "25 Unidades",
+              "preco": 42.00
+            },
+            "50": {
+              "nome": "50 Unidades",
+              "preco": 82.00
+            },
+            "100": {
+              "nome": "100 Unidades",
+              "preco": 164.00
+            }
+          }
+        },
+        "sabor": {
+          "titulo": "Escolha os Sabores",
+          "ordem": 2,
+          "obrigatorio": true,
+          "tipoSelecao": "checkbox",
+          "controleQuantidade": true,
+          "minimoPorItem": 10,
+          "incremento": 10,
+          "somaDeveFecharQuantidade": true,
+          "opcoes": {
+            "50_cacau": {
+              "nome": "50% Cacau com Confete Colorido"
+            },
+            "70_cacau": {
+              "nome": "70% Cacau com Granulado"
+            },
+            "branco": {
+              "nome": "Chocolate Branco"
+            },
+            "beijinho": {
+              "nome": "Beijinho"
+            },
+            "bem_casado": {
+              "nome": "Bem Casado"
+            },
+            "uva": {
+              "nome": "Uva Coberta"
+            }
+          }
+        }
+      }
+    },
+    "marshmallow_festa": {
+      "categoria": "niko_festas",
+      "subcategoria": "festas_adicionais",
+      "nome": "Marshmallow",
+      "preco": 2.45,
+      "tipo": "simples",
+      "ativo": true
+    },
+    "jujuba_festa": {
+      "categoria": "niko_festas",
+      "subcategoria": "festas_adicionais",
+      "nome": "Jujuba",
+      "preco": 1.85,
+      "tipo": "simples",
+      "ativo": true
+    },
+    "ducream_festa": {
+      "categoria": "niko_festas",
+      "subcategoria": "festas_adicionais",
+      "nome": "Ducream",
+      "preco": 1.85,
+      "tipo": "simples",
+      "ativo": true
+    },
+    "bebida_gelada_modelo": {
+      "categoria": "bebidas",
+      "subcategoria": "bebidas_geladas",
+      "nome": "",
+      "descricao": "",
+      "preco": 0,
+      "imagem": "",
+      "tipo": "simples",
+      "ativo": true
+    },
+    "bebida_quente_modelo": {
+      "categoria": "bebidas",
+      "subcategoria": "bebidas_quentes",
+      "nome": "",
+      "descricao": "",
+      "preco": 0,
+      "imagem": "",
+      "tipo": "simples",
+      "ativo": true
+    },
+    "combo_modelo": {
+      "categoria": "combos_promocoes",
+      "nome": "",
+      "descricao": "",
+      "preco": 0,
+      "imagem": "",
+      "tipo": "simples",
+      "destaque": true,
+      "ativo": true
+    }
+  }
+}
