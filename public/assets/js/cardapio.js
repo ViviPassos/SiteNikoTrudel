@@ -2,15 +2,26 @@ import { database, storage } from "./firebase-config.js";
 import { ref as dbRef, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 import { ref as storageRef, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
+import {
+    adicionarAoCarrinho,
+    atualizarContadorCarrinho,
+    abrirCarrinho
+} from "./carrinho.js";
+
 let categorias = {};
 let produtos = {};
-let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
 
 document.addEventListener("DOMContentLoaded", () => {
     carregarCategorias();
     carregarProdutos();
     atualizarContadorCarrinho();
+
+    const btnCarrinho = document.getElementById("btnAbrirCarrinho");
+    if (btnCarrinho) {
+        btnCarrinho.addEventListener("click", abrirCarrinho);
+    }
 });
+
 
 // ======================
 // CATEGORIAS
@@ -66,68 +77,162 @@ function carregarProdutos() {
     });
 }
 
-function normalizarNome(nome) {
-    return nome
-        ?.toString()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/&/g, "e")
-        .replace(/\+/g, "")
-        .replace(/-/g, "")
-        .replace(/\s+/g, "")
-        .replace(/_/g, "")
+// ===============================
+// NORMALIZAR TEXTO
+// ===============================
+function normalizar(texto) {
+    return (texto || "")
+        .toString()
+        .trim()
         .toLowerCase()
-        .trim();
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
 }
 
-// NOVA FUNÇÃO PARA EXIBIÇÃO BONITA
-function formatarNomeExibicao(nome) {
-    if (!nome) return "Outros";
+// ===============================
+// VERIFICAR CATEGORIA DO PRODUTO
+// ===============================
+function categoriaEh(prod, categoriaSelecionada) {
+    if (!prod?.categoria || !categoriaSelecionada) return false;
 
-    return nome
+    return normalizar(prod.categoria) === normalizar(categoriaSelecionada);
+}
+
+
+// ===============================
+// CARREGAR ABA TODOS
+// ===============================
+function carregarTodos(container, categorias, produtos) {
+
+    container.innerHTML = "";
+
+    Object.entries(categorias).forEach(([catId, cat]) => {
+
+        const produtosDaCategoria = Object.entries(produtos)
+            .filter(([_, prod]) =>
+                prod.ativo && categoriaEh(prod, catId)
+            );
+
+        if (produtosDaCategoria.length === 0) return;
+
+        const secao = document.createElement("section");
+        secao.classList.add("categoria-bloco");
+
+        const titulo = document.createElement("h2");
+
+        // 🚀 NÃO formatar nome vindo do Firebase
+        titulo.textContent = cat.nome;
+
+        secao.appendChild(titulo);
+
+        const grid = document.createElement("div");
+        grid.classList.add("grid-produtos");
+
+        produtosDaCategoria.forEach(([id, prod]) => {
+            const card = criarCardProduto(id, prod);
+            grid.appendChild(card);
+        });
+
+        secao.appendChild(grid);
+        container.appendChild(secao);
+    });
+}
+
+// ===============================
+// CARREGAR ABA INDIVIDUAL
+// ===============================
+function carregarCategoria(container, categoriaSelecionada, produtos) {
+
+    container.innerHTML = "";
+
+    const prodsFiltrados = Object.entries(produtos)
+        .filter(([_, prod]) =>
+            prod.ativo && categoriaEh(prod, categoriaSelecionada)
+        );
+
+    if (prodsFiltrados.length === 0) {
+        container.innerHTML = "<p>Nenhum produto encontrado.</p>";
+        return;
+    }
+
+    const grid = document.createElement("div");
+    grid.classList.add("grid-produtos");
+
+    prodsFiltrados.forEach(([id, prod]) => {
+        const card = criarCardProduto(id, prod);
+        grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+}
+
+
+function formatarNomeExibicao(nome) {
+    if (!nome) return "";
+
+    const mapaAcentos = {
+        acai: "Açaí",
+        açaí: "Açaí",
+        promocoes: "Promoções",
+        promoções: "Promoções"
+    };
+
+    const nomeLimpo = nome
         .replace(/_/g, " ")
         .replace(/-/g, " ")
         .replace(/\s+/g, " ")
         .trim()
-        .toLowerCase()
-        .replace(/\b\w/g, letra => letra.toUpperCase());
+        .toLowerCase();
+
+    // Se existir no mapa, retorna corrigido
+    if (mapaAcentos[nomeLimpo]) {
+        return mapaAcentos[nomeLimpo];
+    }
+
+    // Capitaliza corretamente com suporte a acentos
+    return nomeLimpo.replace(
+        /\b[\p{L}]/gu,
+        letra => letra.toUpperCase()
+    );
 }
+
 
 async function renderProdutos(categoriaSelecionada = null) {
 
     const container = document.getElementById("produtosContainer");
     container.innerHTML = "";
 
-    // ======== ABA TODOS =========
+    // ======================
+    // ABA TODOS
+    // ======================
     if (!categoriaSelecionada) {
 
         const categoriasOrdenadas = Object.entries(categorias)
-            .filter(([id, cat]) => cat.ativa)
+            .filter(([_, cat]) => cat.ativa)
             .sort((a, b) => a[1].ordem - b[1].ordem);
 
         for (const [catId, cat] of categoriasOrdenadas) {
 
             const produtosDaCategoria = Object.entries(produtos)
-                .filter(([id, prod]) =>
-                    prod.ativo &&
-                    prod.categoria === catId
+                .filter(([_, prod]) =>
+                    prod.ativo && categoriaEh(prod, catId)
                 );
 
-            if (produtosDaCategoria.length === 0) continue;
+            if (!produtosDaCategoria.length) continue;
 
             const section = document.createElement("div");
             section.className = "categoria-section";
 
             const titulo = document.createElement("h2");
             titulo.className = "titulo-categoria";
-            titulo.textContent = cat.nome;
+            titulo.textContent = cat.nome; // 🔥 não formatar
 
             const grid = document.createElement("div");
             grid.className = "categoria-grid";
 
             for (const [id, prod] of produtosDaCategoria) {
                 const card = await criarCardProduto(id, prod);
-                grid.appendChild(card);
+                if (card) grid.appendChild(card);
             }
 
             section.appendChild(titulo);
@@ -137,84 +242,97 @@ async function renderProdutos(categoriaSelecionada = null) {
 
         return;
     }
+
+    // ======================
+    // FILTRA PRODUTOS DA CATEGORIA (PADRONIZADO)
+    // ======================
+    const prodsFiltrados = Object.entries(produtos)
+        .filter(([_, prod]) => {
+
+            if (!prod.ativo) return false;
+
+            // 🔥 Correção isolada só para combos_promocoes
+            if (categoriaSelecionada === "combos_promocoes") {
+                return normalizar(prod.categoria) === normalizar("Combos & Promoções")
+                    || normalizar(prod.categoria) === normalizar("combos-promocoes")
+                    || normalizar(prod.categoria) === normalizar("combos_promocoes");
+            }
+
+            return categoriaEh(prod, categoriaSelecionada);
+        });
+
+
+
+    if (!prodsFiltrados.length) {
+        container.innerHTML = "<p>Nenhum produto encontrado.</p>";
+        return;
+    }
+
     const agrupados = {};
 
-    const usaSubcategoria = prodsFiltrados.some(([id, prod]) =>
-        prod.subcategoria && prod.subcategoria.trim() !== ""
-    );
-
+    // ======================
+    // AGRUPAMENTO POR SUBCATEGORIA (mantido)
+    // ======================
     for (const [id, prod] of prodsFiltrados) {
 
         let nomeDivisao = "";
-        let ehMonte = false;
 
-        if (usaSubcategoria) {
-            nomeDivisao = prod.subcategoria?.trim() || "Outros";
+        if (prod.subcategoria && prod.subcategoria.trim() !== "") {
+            nomeDivisao = prod.subcategoria.trim();
         } else {
+            const nomeOriginal = prod.nome?.trim() || "";
+            if (!nomeOriginal) continue;
 
-            const nome = prod.nome?.trim() || "";
-
-            // Detecta monte
-            if (nome.toLowerCase().includes("monte")) {
-                ehMonte = true;
-            }
-
-            // Se tiver hífen
-            if (nome.includes(" - ")) {
-                nomeDivisao = nome.split(" - ")[0].trim();
+            if (nomeOriginal.includes(" - ")) {
+                nomeDivisao = nomeOriginal.split(" - ")[0].trim();
             } else {
-                // Remove palavras de monte do final
-                nomeDivisao = nome
-                    .replace(/monte.*$/i, "")
-                    .trim();
-
-                // Se ainda tiver mais de uma palavra, pega só a primeira
-                if (nomeDivisao.includes(" ")) {
-                    nomeDivisao = nomeDivisao.split(" ")[0];
-                }
-            }
-
-            if (!nomeDivisao) {
-                nomeDivisao = nome; // fallback final
+                nomeDivisao = nomeOriginal.replace(/monte.*$/i, "").trim();
             }
         }
 
-        const key = normalizarNome(nomeDivisao);
+        if (!nomeDivisao) continue;
+
+        const key = normalizar(nomeDivisao);
 
         if (!agrupados[key]) {
             agrupados[key] = {
                 nomeExibicao: formatarNomeExibicao(nomeDivisao),
-                produtos: [],
-                ehMonteGrupo: ehMonte
+                produtos: []
             };
         }
 
         agrupados[key].produtos.push({
             id,
             prod,
-            ehMonte
+            ehMonte: prod.nome?.toLowerCase().includes("monte")
         });
     }
 
-
-    // ===== ORDENAR DIVISÕES CORRETAMENTE =====
-
+    // ======================
+    // ORDENAÇÃO (Monte sempre último)
+    // ======================
     const divisoesOrdenadas = Object.keys(agrupados)
         .sort((a, b) => {
 
             const grupoA = agrupados[a];
             const grupoB = agrupados[b];
 
-            // 🔥 Monte sempre depois
-            if (grupoA.ehMonteGrupo && !grupoB.ehMonteGrupo) return 1;
-            if (!grupoA.ehMonteGrupo && grupoB.ehMonteGrupo) return -1;
+            const todosMonteA = grupoA.produtos.every(p => p.ehMonte);
+            const todosMonteB = grupoB.produtos.every(p => p.ehMonte);
 
-            return grupoA.nomeExibicao.localeCompare(grupoB.nomeExibicao);
+            if (todosMonteA && !todosMonteB) return 1;
+            if (!todosMonteA && todosMonteB) return -1;
+
+            return grupoA.nomeExibicao.localeCompare(
+                grupoB.nomeExibicao,
+                "pt-BR",
+                { sensitivity: "base" }
+            );
         });
 
-
-    // ===== RENDERIZAR =====
-
+    // ======================
+    // RENDER FINAL
+    // ======================
     for (const key of divisoesOrdenadas) {
 
         const grupo = agrupados[key];
@@ -231,15 +349,15 @@ async function renderProdutos(categoriaSelecionada = null) {
 
         for (const item of grupo.produtos) {
             const card = await criarCardProduto(item.id, item.prod);
-            grid.appendChild(card);
+            if (card) grid.appendChild(card);
         }
 
         section.appendChild(titulo);
         section.appendChild(grid);
         container.appendChild(section);
     }
-
 }
+
 
 
 async function criarCardProduto(id, prod) {
@@ -364,33 +482,128 @@ function abrirModalPersonalizacao(prodId) {
             body.appendChild(divGrupo);
         });
 
-    // Aqui vamos adicionar listeners para calcular preço total depois
-    // Por enquanto só abre o modal
+    // ===============================
+    // VALIDAÇÃO + CÁLCULO MONTE
+    // ===============================
+
+    const btnAdd = document.getElementById("btnAddCarrinhoModal");
+    const precoTotalSpan = document.getElementById("precoTotalModal");
+
+    function validarMonte() {
+        let valido = true;
+
+        Object.entries(prod.grupos).forEach(([grupoKey, grupo]) => {
+
+            const inputs = body.querySelectorAll(
+                `input[name="grupo-${grupoKey}"], 
+             input[id^="opt-${grupoKey}-"]`
+            );
+
+            const selecionados = Array.from(inputs).filter(i => i.checked);
+
+            const qtd = selecionados.length;
+
+            // RADIO
+            if (grupo.tipoSelecao === "radio") {
+                if (grupo.obrigatorio && qtd !== 1) {
+                    valido = false;
+                }
+            }
+
+            // CHECKBOX
+            if (grupo.tipoSelecao === "checkbox") {
+
+                const min = grupo.min ?? (grupo.obrigatorio ? 1 : 0);
+                const max = grupo.max ?? Infinity;
+
+                if (qtd < min || qtd > max) {
+                    valido = false;
+                }
+            }
+        });
+
+        btnAdd.disabled = !valido;
+        return valido;
+    }
+
+    function calcularPrecoModal() {
+
+        let total = prod.preco || 0;
+
+        const inputs = body.querySelectorAll("input");
+
+        inputs.forEach(input => {
+            if (input.checked) {
+                total += Number(input.dataset.preco || 0);
+            }
+        });
+
+        precoTotalSpan.textContent =
+            "R$ " + total.toFixed(2).replace(".", ",");
+
+        return total;
+    }
+
+    // Bloqueio automático de excesso (MAX)
+    body.addEventListener("change", e => {
+
+        const input = e.target;
+        if (!input.matches("input")) return;
+
+        const grupoKey = input.name?.replace("grupo-", "")
+            || input.id.split("-")[1];
+
+        const grupo = prod.grupos[grupoKey];
+        if (!grupo) return;
+
+        if (grupo.tipoSelecao === "checkbox" && grupo.max) {
+
+            const inputsGrupo = body.querySelectorAll(
+                `input[id^="opt-${grupoKey}-"]`
+            );
+
+            const selecionados = Array.from(inputsGrupo)
+                .filter(i => i.checked);
+
+            if (selecionados.length > grupo.max) {
+                input.checked = false;
+                return;
+            }
+        }
+
+        calcularPrecoModal();
+        validarMonte();
+    });
+
+    // Inicializa
+    calcularPrecoModal();
+    validarMonte();
+
+    // Botão adicionar
+    btnAdd.onclick = () => {
+
+        if (!validarMonte()) return;
+
+        const selecionados = {};
+
+        Object.entries(prod.grupos).forEach(([grupoKey]) => {
+
+            const inputs = body.querySelectorAll(
+                `input[name="grupo-${grupoKey}"], 
+             input[id^="opt-${grupoKey}-"]`
+            );
+
+            const marcados = Array.from(inputs)
+                .filter(i => i.checked)
+                .map(i => i.value);
+
+            selecionados[grupoKey] = marcados;
+        });
+
+        adicionarAoCarrinho(prodId, 1, selecionados);
+
+        bootstrap.Modal.getInstance(modal).hide();
+    };
     new bootstrap.Modal(modal).show();
 }
 
-// ======================
-// CARRINHO (básico)
-// ======================
-function adicionarAoCarrinho(prodId, quantidade = 1, opcoesSelecionadas = {}) {
-    const itemExistente = carrinho.find(item => item.prodId === prodId && JSON.stringify(item.opcoes) === JSON.stringify(opcoesSelecionadas));
-    if (itemExistente) {
-        itemExistente.quantidade += quantidade;
-    } else {
-        carrinho.push({ prodId, quantidade, opcoes: opcoesSelecionadas });
-    }
-    salvarCarrinho();
-    atualizarContadorCarrinho();
-    alert("Adicionado ao carrinho!"); // temporário
-}
-
-function salvarCarrinho() {
-    localStorage.setItem('carrinho', JSON.stringify(carrinho));
-}
-
-function atualizarContadorCarrinho() {
-    const totalItens = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
-    // Você pode criar um elemento <span id="carrinhoContador"> no header
-    const contadorEl = document.getElementById("carrinhoContador");
-    if (contadorEl) contadorEl.textContent = totalItens;
-}

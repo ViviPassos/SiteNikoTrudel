@@ -2897,7 +2897,7 @@ textarea.form-control-lg {
   }
 }
 .btn:hover {
-  color: #212529;
+  color: #fff;
 }
 .btn-check:focus + .btn, .btn:focus {
   outline: 0;

@@ -5,7 +5,7 @@
     "whatsapp": ""
   },
   "categorias": {
-     "combos_promocoes": {
+    "combos_promocoes": {
       "nome": "Combos & Promoções",
       "slug": "combos-promocoes",
       "ordem": 1,
@@ -52,9 +52,63 @@
       "slug": "bebidas",
       "ordem": 8,
       "ativa": true
-    }   
+    }
   },
   "subcategorias": {
+    "trudel_tradicional": {
+      "categoria": "trudels",
+      "nome": "Trudels",
+      "ordem": 1,
+      "ativa": true
+    },
+    "trudel_monte": {
+      "categoria": "trudels",
+      "nome": "Monte o Seu",
+      "ordem": 2,
+      "ativa": true
+    },
+    "pizzas": {
+      "categoria": "pizzas_massas",
+      "nome": "Pizzas",
+      "ordem": 1,
+      "ativa": true
+    },
+    "massas_monte": {
+      "categoria": "pizzas_massas",
+      "nome": "Massas - Monte o Seu",
+      "ordem": 2,
+      "ativa": true
+    },
+    "acai": {
+      "categoria": "sorvetes_acai",
+      "nome": "Açaí",
+      "ordem": 1,
+      "ativa": true
+    },
+    "sorvete_monte": {
+      "categoria": "sorvetes_acai",
+      "nome": "Sorvetes - Monte o Seu",
+      "ordem": 2,
+      "ativa": true
+    },
+    "salgados": {
+      "categoria": "salgados_brownies",
+      "nome": "Salgados",
+      "ordem": 1,
+      "ativa": true
+    },
+    "brownies": {
+      "categoria": "salgados_brownies",
+      "nome": "Brownies",
+      "ordem": 2,
+      "ativa": true
+    },
+    "brownie_monte": {
+      "categoria": "salgados_brownies",
+      "nome": "Brownie + Sorvete - Monte o Seu",
+      "ordem": 3,
+      "ativa": true
+    },
     "festas_salgadinhos": {
       "categoria": "niko_festas",
       "nome": "Salgadinhos",
@@ -107,6 +161,7 @@
   "produtos": {
     "trudel_simples_modelo": {
       "categoria": "trudels",
+      "subcategoria": "trudel_tradicional",
       "nome": "",
       "descricao": "",
       "preco": 0,
@@ -117,6 +172,7 @@
     },
     "monte_trudel_doce": {
       "categoria": "trudels",
+      "subcategoria": "trudel_monte",
       "nome": "Monte seu Trudel - Doce",
       "tipo": "montavel",
       "ativo": true,
@@ -173,6 +229,7 @@
     },
     "monte_trudel_salgado": {
       "categoria": "trudels",
+      "subcategoria": "trudel_monte",
       "nome": "Monte seu Trudel - Salgado",
       "tipo": "montavel",
       "ativo": true,
@@ -202,6 +259,7 @@
     },
     "pizza_modelo": {
       "categoria": "pizzas_massas",
+      "subcategoria": "pizzas",
       "nome": "",
       "descricao": "",
       "preco": 0,
@@ -211,6 +269,7 @@
     },
     "monte_sua_massa": {
       "categoria": "pizzas_massas",
+      "subcategoria": "massas_monte",
       "nome": "Monte sua Massa",
       "tipo": "montavel",
       "ativo": true,
@@ -247,6 +306,7 @@
     },
     "acai_modelo": {
       "categoria": "sorvetes_acai",
+      "subcategoria": "acai",
       "nome": "",
       "descricao": "",
       "preco": 0,
@@ -256,6 +316,7 @@
     },
     "monte_seu_sorvete": {
       "categoria": "sorvetes_acai",
+      "subcategoria": "sorvete_monte",
       "nome": "Monte seu Sorvete",
       "tipo": "montavel",
       "ativo": true,
@@ -285,6 +346,7 @@
     },
     "salgado_modelo": {
       "categoria": "salgados_brownies",
+      "subcategoria": "salgados",
       "nome": "",
       "descricao": "",
       "preco": 0,
@@ -294,6 +356,7 @@
     },
     "trudel_dog": {
       "categoria": "salgados_brownies",
+      "subcategoria": "salgados",
       "nome": "Trudel Dog",
       "descricao": "Salsicha, queijo mussarela gratinado, ketchup, maionese e batata palha.",
       "preco": 0,
@@ -337,6 +400,7 @@
     },
     "brownie_modelo": {
       "categoria": "salgados_brownies",
+      "subcategoria": "brownies",
       "nome": "",
       "descricao": "",
       "preco": 0,
@@ -346,6 +410,7 @@
     },
     "brownie_sorvete": {
       "categoria": "salgados_brownies",
+      "subcategoria": "brownie_monte",
       "nome": "Brownie + Sorvete",
       "tipo": "montavel",
       "ativo": true,
@@ -767,9 +832,9 @@
     "bebida_gelada_modelo": {
       "categoria": "bebidas",
       "subcategoria": "bebidas_geladas",
-      "nome": "",
+      "nome": "Bebida Gelada",
       "descricao": "",
-      "preco": 0,
+      "preco": 10,
       "imagem": "",
       "tipo": "simples",
       "ativo": true
@@ -786,7 +851,7 @@
     },
     "combo_modelo": {
       "categoria": "combos_promocoes",
-      "nome": "",
+      "nome": "Combo Modelo",
       "descricao": "",
       "preco": 0,
       "imagem": "",

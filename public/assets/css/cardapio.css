@@ -22,8 +22,8 @@
   --transicao: all 0.3s ease;
 }
 
-body{
-  font-family: 'Poppins',sans-serif;
+body {
+  font-family: 'Poppins', sans-serif;
 }
 
 /* === NAV === */
@@ -751,7 +751,7 @@ header.header-area {
 }
 
 .menu-hero h1 {
-  font-family: 'Fredoka',sans-serif;
+  font-family: 'Fredoka', sans-serif;
   font-size: 3.2rem;
   font-weight: 800;
   margin-bottom: 0.8rem;
@@ -810,13 +810,13 @@ header.header-area {
 }
 
 .menu-nav button {
-  font-family: 'Fredoka',sans-serif;
+  font-family: 'Fredoka', sans-serif;
   flex-shrink: 0;
   /* impede que encolham demais */
   padding: 0.65rem 1.3rem;
   border: none;
   background: rgba(123, 44, 191, 0.08);
-  color: var(--roxo-principal);
+  color: #631a86;
   font-weight: 600;
   font-size: 0.95rem;
   border-radius: 50px;
@@ -833,7 +833,7 @@ header.header-area {
 }
 
 .menu-nav button.active {
-  background: var(--roxo-principal);
+  background: #631a86;
   color: white;
   box-shadow: 0 4px 15px rgba(123, 44, 191, 0.3);
 }
@@ -857,6 +857,9 @@ header.header-area {
 }
 
 .titulo-categoria {
+  font-family: 'Fredoka',sans-serif;
+  font-weight: 700;
+  color: #501780;
   margin: 20px 0px;
   font-size: 1.6rem;
   font-weight: 600;
@@ -875,11 +878,12 @@ header.header-area {
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   transition: transform 0.2s ease;
-  width: 100%; /* importante */
+  width: 100%;
+  /* importante */
 }
 
 .produto-card:hover {
@@ -953,7 +957,7 @@ header.header-area {
 /* ===== BOTÃO ===== */
 
 .btn-add {
-  background: var(--roxo-principal);
+  background: #631a86;
   color: white;
   border: none;
   padding: 0.9rem;
@@ -978,7 +982,7 @@ header.header-area {
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--roxo-principal), var(--roxo-claro));
+  background: #501780;
   color: white;
   border: none;
   font-size: 1.8rem;
@@ -1118,11 +1122,11 @@ header.header-area {
   }
 
   .floating-cart {
-    bottom: 20px;
-    right: 20px;
+    bottom: 75px;
+    right: 10px;
     width: 60px;
     height: 60px;
-    font-size: 1.6rem;
+    font-size: 2rem;
   }
 }
 
@@ -1181,10 +1185,10 @@ header.header-area {
   }
 
   .floating-cart {
-    bottom: 40px;
-    right: 40px;
-    width: 80px;
-    height: 80px;
+    bottom: 90px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
     font-size: 2rem;
   }
 }
