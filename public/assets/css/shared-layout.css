@@ -1,0 +1,282 @@
+/* shared-layout.css
+   Base de layout (sidebar, topbar, main, form, modal, toggle, toast)
+   importado pelos CSS de cada página interna do painel.
+   NÃO use diretamente nos HTMLs — cada página tem seu próprio CSS
+   que importa este arquivo via @import.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --purple:        #7C3AED;
+  --purple-dark:   #6D28D9;
+  --purple-light:  #EDE9FE;
+  --purple-lighter:#F5F3FF;
+  --cream:         #F7F5EF;
+  --white:         #FFFFFF;
+  --dark:          #1E0A3C;
+  --gray:          #6B7280;
+  --gray-light:    #E5E7EB;
+  --danger:        #EF4444;
+  --success:       #10B981;
+  --warning:       #F59E0B;
+  --sidebar-width: 220px;
+  --topbar-height: 52px;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  color: var(--dark);
+  min-height: 100vh;
+}
+
+/* ── Layout ────────────────────────────────────────────────────────── */
+.layout { display: flex; min-height: 100vh; }
+
+/* ── Sidebar ───────────────────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--white);
+  border-right: 1px solid var(--gray-light);
+  display: flex; flex-direction: column;
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+}
+
+.sidebar-brand {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.brand-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--purple); color: white;
+  font-weight: 800; font-size: 13px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.brand-name { font-size: 13px; font-weight: 700; color: var(--dark); line-height: 1.2; }
+.brand-role { font-size: 11px; color: var(--gray); }
+
+.sidebar-nav { flex: 1; padding: 16px 8px; }
+
+.sidebar-label {
+  font-size: 10px; font-weight: 700; color: var(--gray);
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 0 8px; margin-bottom: 6px;
+}
+
+.sidebar-nav a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 10px; border-radius: 8px;
+  text-decoration: none; color: var(--dark);
+  font-size: 13.5px; font-weight: 600;
+  transition: background .15s, color .15s; margin-bottom: 2px;
+}
+
+.sidebar-nav a i { font-size: 15px; width: 18px; text-align: center; }
+.sidebar-nav a:hover, .sidebar-nav a.active {
+  background: var(--purple-lighter); color: var(--purple);
+}
+
+.sidebar-footer { padding: 12px 8px; border-top: 1px solid var(--gray-light); }
+
+.sidebar-footer a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px; border-radius: 8px;
+  text-decoration: none; color: var(--gray);
+  font-size: 13px; font-weight: 600;
+  transition: background .15s, color .15s; margin-bottom: 2px;
+}
+
+.sidebar-footer a:hover        { background: var(--purple-lighter); color: var(--purple); }
+.sidebar-footer a.danger       { color: var(--danger); }
+.sidebar-footer a.danger:hover { background: #FEF2F2; }
+
+/* ── Topbar ────────────────────────────────────────────────────────── */
+.topbar {
+  position: fixed; top: 0;
+  left: var(--sidebar-width); right: 0;
+  height: var(--topbar-height);
+  background: var(--white); border-bottom: 1px solid var(--gray-light);
+  display: flex; align-items: center; padding: 0 28px; z-index: 90;
+}
+
+.topbar-title { font-size: 14px; font-weight: 700; color: var(--dark); }
+
+/* ── Main ──────────────────────────────────────────────────────────── */
+.main {
+  margin-left: var(--sidebar-width);
+  margin-top: var(--topbar-height);
+  padding: 32px 28px; flex: 1;
+}
+
+.page-title    { font-size: 28px; font-weight: 900; color: var(--dark); line-height: 1.1; }
+.page-subtitle { font-size: 14px; color: var(--gray); margin-top: 4px; }
+
+.section-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+/* ── Buttons ───────────────────────────────────────────────────────── */
+.btn-primary {
+  background: var(--purple); color: white; border: none;
+  border-radius: 10px; padding: 9px 18px;
+  font-family: 'Nunito', sans-serif; font-size: 13.5px; font-weight: 700;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+  transition: background .15s, transform .1s;
+}
+.btn-primary:hover  { background: var(--purple-dark); }
+.btn-primary:active { transform: scale(.97); }
+
+.btn-outline {
+  background: transparent; color: var(--purple);
+  border: 1.5px solid var(--purple); border-radius: 10px;
+  padding: 8px 18px; font-family: 'Nunito', sans-serif;
+  font-size: 13.5px; font-weight: 700; cursor: pointer;
+  transition: background .15s;
+}
+.btn-outline:hover { background: var(--purple-lighter); }
+
+.btn-icon {
+  width: 32px; height: 32px; border-radius: 8px; border: none;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; transition: background .15s; background: transparent;
+}
+.btn-icon.edit       { color: var(--gray); }
+.btn-icon.edit:hover { background: var(--gray-light); }
+.btn-icon.del        { color: var(--danger); }
+.btn-icon.del:hover  { background: #FEE2E2; }
+
+/* ── Form ──────────────────────────────────────────────────────────── */
+.form-group   { margin-bottom: 16px; }
+.form-row     { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.form-label {
+  display: block; font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 6px;
+}
+
+.form-control {
+  width: 100%; padding: 9px 12px;
+  border: 1.5px solid var(--gray-light); border-radius: 10px;
+  font-family: 'Nunito', sans-serif; font-size: 13.5px; color: var(--dark);
+  background: var(--cream); outline: none; transition: border-color .15s, background .15s;
+}
+.form-control:focus { border-color: var(--purple); background: white; }
+textarea.form-control { resize: vertical; min-height: 80px; }
+
+.form-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 1px solid #F3F4F6;
+}
+.form-toggle-label { font-size: 13.5px; font-weight: 600; color: var(--dark); }
+
+.hint { font-size: 11px; color: #9CA3AF; margin-top: 3px; }
+
+/* ── Toggle ────────────────────────────────────────────────────────── */
+.toggle { position: relative; display: inline-block; width: 44px; height: 24px; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+
+.toggle-slider {
+  position: absolute; cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #D1D5DB; border-radius: 24px; transition: .2s;
+}
+.toggle-slider::before {
+  position: absolute; content: '';
+  height: 18px; width: 18px; left: 3px; bottom: 3px;
+  background: white; border-radius: 50%; transition: .2s;
+}
+.toggle input:checked + .toggle-slider { background: var(--purple); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+/* ── Modal ─────────────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--white); border-radius: 20px; padding: 28px;
+  width: 480px; max-width: 95vw; max-height: 88vh; overflow-y: auto;
+  transform: translateY(12px); transition: transform .2s;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+}
+.modal-title { font-size: 18px; font-weight: 800; color: var(--dark); }
+
+.modal-close {
+  width: 30px; height: 30px; border: none; background: none;
+  border-radius: 8px; cursor: pointer; font-size: 16px; color: var(--gray);
+  display: flex; align-items: center; justify-content: center; transition: background .15s;
+}
+.modal-close:hover { background: var(--gray-light); }
+
+.modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+
+/* ── Empty state ───────────────────────────────────────────────────── */
+.empty-state { text-align: center; padding: 48px 20px; color: var(--gray); }
+.empty-state i { font-size: 40px; margin-bottom: 10px; opacity: .4; display: block; }
+.empty-state p { font-size: 14px; font-weight: 600; }
+
+/* ── Toast ─────────────────────────────────────────────────────────── */
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px;
+  z-index: 9999; display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  background: var(--white); border-radius: 12px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  font-size: 13.5px; font-weight: 600; min-width: 240px;
+  animation: toastIn .25s ease; border-left: 4px solid var(--success);
+}
+.toast.error { border-left-color: var(--danger); }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Loading overlay ───────────────────────────────────────────────── */
+.loading-overlay {
+  position: fixed; inset: 0; background: rgba(255,255,255,.8);
+  display: none; align-items: center; justify-content: center;
+  z-index: 999; font-size: 15px; font-weight: 700; color: var(--purple); gap: 10px;
+}
+.loading-overlay.show { display: flex; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin 1s linear infinite; }
+
+/* ── Back button ───────────────────────────────────────────────────── */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--gray); font-size: 13px; font-weight: 600;
+  text-decoration: none; margin-bottom: 20px;
+  background: none; border: none; cursor: pointer; padding: 0;
+  font-family: 'Nunito', sans-serif;
+}
+.back-btn:hover { color: var(--purple); }
+
+/* ── Form card ─────────────────────────────────────────────────────── */
+.form-card {
+  background: var(--white); border-radius: 16px;
+  border: 1.5px solid var(--gray-light); padding: 28px;
+}
+
+/* ── Section divider ───────────────────────────────────────────────── */
+.section-divider {
+  font-size: 14px; font-weight: 800; color: var(--dark);
+  padding: 14px 0 8px; border-bottom: 2px solid #F3F4F6; margin-bottom: 16px;
+}

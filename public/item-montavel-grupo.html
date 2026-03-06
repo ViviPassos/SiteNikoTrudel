@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Montável com Grupos – Admin Niko Trudel</title>
+  <style>
+    .form-card { background:#fff; border-radius:16px; border:1.5px solid #E5E7EB; padding:28px; max-width:800px; }
+    .back-btn { display:inline-flex;align-items:center;gap:6px;color:#6B7280;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:20px;background:none;border:none;cursor:pointer;padding:0;font-family:'Nunito',sans-serif; }
+    .back-btn:hover { color:#7C3AED; }
+    .section-divider { font-size:14px;font-weight:800;color:#1E0A3C;padding:14px 0 8px;border-bottom:2px solid #F3F4F6;margin-bottom:16px; }
+
+    /* Grupos */
+    .grupo-card {
+      border: 1.5px solid #E5E7EB;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      background: #FAFAFA;
+    }
+    .grupo-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .grupo-title-badge {
+      background: #7C3AED; color: white;
+      font-size: 11px; font-weight: 700;
+      padding: 3px 9px; border-radius: 20px;
+    }
+    .grupo-form-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:12px; }
+    .opcao-row { display:flex;align-items:center;gap:8px;padding:8px;background:#fff;border:1px solid #E5E7EB;border-radius:8px;margin-bottom:6px; }
+    .btn-remove { width:30px;height:30px;border-radius:7px;border:none;background:#FEE2E2;color:#EF4444;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px; }
+    .btn-add-opcao { display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:#7C3AED;background:none;border:2px dashed #C4B5FD;padding:6px 12px;border-radius:8px;cursor:pointer;transition:background .15s; }
+    .btn-add-opcao:hover { background:#F5F3FF; }
+    .btn-add-grupo { display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#7C3AED;background:none;border:2px dashed #7C3AED;padding:10px 18px;border-radius:12px;cursor:pointer;width:100%;justify-content:center;transition:background .15s;margin-bottom:16px; }
+    .btn-add-grupo:hover { background:#F5F3FF; }
+    .loading-overlay { position:fixed;inset:0;background:rgba(255,255,255,.8);display:none;align-items:center;justify-content:center;z-index:999;font-size:15px;font-weight:700;color:#7C3AED;gap:10px; }
+    .loading-overlay.show { display:flex; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .hint { font-size:11px;color:#9CA3AF;margin-top:3px; }
+
+    .collapse-btn { background:none;border:none;cursor:pointer;color:#7C3AED;font-size:14px;padding:4px; }
+    .grupo-body.collapsed { display:none; }
+  </style>
+  <link rel="stylesheet" href="/public/assets/css/item-montavel-grupo.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+<body>
+  <div class="layout" id="app"></div>
+  <div class="loading-overlay" id="loadingOverlay">
+    <i class="bi bi-arrow-repeat" style="animation:spin 1s linear infinite;font-size:22px;"></i> Salvando...
+  </div>
+  <div class="toast-container"></div>
+
+  <script type="module" src="/public/assets/js/item-montavel-grupo.js"></script>
+</body>
+</html>

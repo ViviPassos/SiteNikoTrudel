@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – Admin Niko Trudel</title>
+  <link rel="stylesheet" href="/public/assets/css/login.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-card">
+      <div class="login-icon"><i class="bi bi-lock-fill"></i></div>
+      <h1 class="login-title">Área Admin</h1>
+      <p class="login-sub">Faça login para gerenciar o cardápio</p>
+
+      <div class="login-field">
+        <label class="form-label">Email</label>
+        <div class="input-wrap">
+          <i class="bi bi-envelope prefix"></i>
+          <input type="email" id="email" placeholder="admin@nikotrudel.com" autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="login-field">
+        <label class="form-label">Senha</label>
+        <div class="input-wrap">
+          <i class="bi bi-lock prefix"></i>
+          <input type="password" id="senha" placeholder="••••••••" autocomplete="current-password" />
+          <button class="suffix" id="toggleSenha" type="button"><i class="bi bi-eye"></i></button>
+        </div>
+      </div>
+
+      <div id="loginError" style="display:none;color:#EF4444;font-size:13px;font-weight:600;margin-bottom:8px;text-align:left;"></div>
+
+      <button class="btn-login" id="btnLogin">Entrar</button>
+
+      <br />
+      <a href="index.html" class="back-link"><i class="bi bi-arrow-left"></i> Voltar ao cardápio</a>
+    </div>
+  </div>
+
+  <div class="toast-container"></div>
+
+  <!-- Firebase -->
+
+  <script type="module" src="/public/assets/js/login.js"></script>
+</body>
+</html>

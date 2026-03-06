@@ -1,5 +1,4 @@
-import { database } from "./firebase-config.js";
-import { ref as dbRef, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { db, ref, get } from './firebase-config.js';
 
 /* =============================
    CONFIG
@@ -25,7 +24,7 @@ async function carregarProdutos() {
     if (produtosCache) return produtosCache;
 
     try {
-        const snapshot = await get(dbRef(database, "produtos"));
+        const snapshot = await get(ref(db, "produtos"));
         produtosCache = snapshot.val() || {};
         return produtosCache;
     } catch (error) {
@@ -54,20 +53,32 @@ export function atualizarContadorCarrinho() {
    ADICIONAR ITEM
 ============================= */
 export function adicionarAoCarrinho(prodId, quantidade = 1, opcoesSelecionadas = {}) {
+    const itemBase = {
+        prodId,
+        quantidade,
+        preco: Number(opcoesSelecionadas.precoFinal || opcoesSelecionadas.preco || 0),
+        descricaoExtra: opcoesSelecionadas.saboresTexto ||
+                        opcoesSelecionadas.descricaoAdicional ||
+                        "Personalizado",
+        opcoes: { ...opcoesSelecionadas }
+    };
+
+    delete itemBase.opcoes.precoFinal;
+    delete itemBase.opcoes.preco;
+    delete itemBase.opcoes.saboresTexto;
+    delete itemBase.opcoes.descricaoAdicional;
 
     const itemExistente = carrinho.find(item =>
         item.prodId === prodId &&
-        JSON.stringify(item.opcoes) === JSON.stringify(opcoesSelecionadas)
+        JSON.stringify(item.opcoes) === JSON.stringify(itemBase.opcoes)
     );
 
     if (itemExistente) {
         itemExistente.quantidade += quantidade;
+        itemExistente.preco = itemBase.preco;
+        itemExistente.descricaoExtra = itemBase.descricaoExtra;
     } else {
-        carrinho.push({
-            prodId,
-            quantidade,
-            opcoes: opcoesSelecionadas
-        });
+        carrinho.push(itemBase);
     }
 
     salvarCarrinho();
@@ -92,15 +103,9 @@ function fecharCarrinho() {
    ALTERAR QTD
 ============================= */
 function alterarQtd(index, delta) {
-
     if (!carrinho[index]) return;
-
     carrinho[index].quantidade += delta;
-
-    if (carrinho[index].quantidade <= 0) {
-        carrinho.splice(index, 1);
-    }
-
+    if (carrinho[index].quantidade <= 0) carrinho.splice(index, 1);
     salvarCarrinho();
     atualizarContadorCarrinho();
     renderCarrinho();
@@ -117,29 +122,50 @@ function removerItem(index) {
    RENDER
 ============================= */
 async function renderCarrinho() {
-
     const container = document.getElementById("cartItens");
-    const totalEl = document.getElementById("cartTotal");
-
+    const totalEl   = document.getElementById("cartTotal");
     if (!container || !totalEl) return;
 
     const produtos = await carregarProdutos();
-
     container.innerHTML = "";
     let total = 0;
 
     carrinho.forEach((item, index) => {
-
         const prod = produtos[item.prodId];
         if (!prod) return;
 
-        const preco = Number(prod.preco) || 0;
-        const subtotal = preco * item.quantidade;
-        total += subtotal;
+        let preco    = 0;
+        let subtotal = 0;
+        let detalhesHTML = "";
+
+        if (item.opcoes?.tipo === "festa") {
+            preco    = Number(item.opcoes.precoUnitario) || 0;
+            subtotal = preco * item.quantidade;
+            total   += subtotal;
+
+            detalhesHTML += `
+                <div class="cart-festa-info">
+                    <small><strong>${item.opcoes.quantidadeTotal} unidades</strong></small>
+                </div>
+            `;
+
+            if (item.opcoes.sabores?.length) {
+                item.opcoes.sabores.forEach(sabor => {
+                    detalhesHTML += `
+                        <div class="cart-sabor">
+                            <small>${sabor.qtd} ${sabor.nome}</small>
+                        </div>
+                    `;
+                });
+            }
+        } else {
+            preco    = Number(prod.preco) || 0;
+            subtotal = preco * item.quantidade;
+            total   += subtotal;
+        }
 
         const div = document.createElement("div");
         div.className = "cart-item";
-
         div.innerHTML = `
             <div class="cart-item-header">
                 <h6>${prod.nome}</h6>
@@ -147,23 +173,20 @@ async function renderCarrinho() {
                     <i class="bi bi-trash"></i>
                 </button>
             </div>
-
+            ${detalhesHTML}
             <div class="cart-item-bottom">
                 <div class="qty-box">
                     <button class="btn-menos" data-index="${index}">−</button>
                     <span>${item.quantidade}</span>
                     <button class="btn-mais" data-index="${index}">+</button>
                 </div>
-
                 <strong>${formatarMoeda(subtotal)}</strong>
             </div>
         `;
-
         container.appendChild(div);
     });
 
     totalEl.textContent = formatarMoeda(total);
-
     ativarEventosInternos();
 }
 
@@ -171,79 +194,63 @@ async function renderCarrinho() {
    WHATSAPP
 ============================= */
 async function finalizarWhatsApp() {
-
-    if (!carrinho.length) {
-        alert("Seu carrinho está vazio.");
-        return;
-    }
+    if (!carrinho.length) { alert("Seu carrinho está vazio."); return; }
 
     const produtos = await carregarProdutos();
-
     let mensagem = "Olá! Quero fazer um pedido:\n\n";
     let total = 0;
 
     carrinho.forEach(item => {
-
         const prod = produtos[item.prodId];
         if (!prod) return;
 
-        const preco = Number(prod.preco) || 0;
-        const subtotal = preco * item.quantidade;
-        total += subtotal;
+        if (item.opcoes?.tipo === "festa") {
+            const preco    = Number(item.opcoes.precoUnitario) || 0;
+            const subtotal = preco * item.quantidade;
+            total += subtotal;
 
-        mensagem += `• ${item.quantidade}x ${prod.nome} - ${formatarMoeda(subtotal)}\n`;
+            mensagem += `• ${prod.nome}\n`;
+            mensagem += `  ${item.opcoes.quantidadeTotal} unidades\n`;
+            item.opcoes.sabores?.forEach(s => { mensagem += `  ${s.qtd} ${s.nome}\n`; });
+            mensagem += `  ${formatarMoeda(subtotal)}\n\n`;
+        } else {
+            const preco    = Number(prod.preco) || 0;
+            const subtotal = preco * item.quantidade;
+            total += subtotal;
+            mensagem += `• ${item.quantidade}x ${prod.nome} - ${formatarMoeda(subtotal)}\n`;
+        }
     });
 
     mensagem += `\nTotal: ${formatarMoeda(total)}`;
-
-    const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`;
-
-    window.open(url, "_blank");
+    window.open(`https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`, "_blank");
 }
 
 /* =============================
-   EVENTOS
+   EVENTOS INTERNOS
 ============================= */
 function ativarEventosInternos() {
-
-    document.querySelectorAll(".btn-remover").forEach(btn => {
-        btn.addEventListener("click", () =>
-            removerItem(Number(btn.dataset.index))
-        );
-    });
-
-    document.querySelectorAll(".btn-menos").forEach(btn => {
-        btn.addEventListener("click", () =>
-            alterarQtd(Number(btn.dataset.index), -1)
-        );
-    });
-
-    document.querySelectorAll(".btn-mais").forEach(btn => {
-        btn.addEventListener("click", () =>
-            alterarQtd(Number(btn.dataset.index), 1)
-        );
-    });
+    document.querySelectorAll(".btn-remover").forEach(btn =>
+        btn.addEventListener("click", () => removerItem(Number(btn.dataset.index))));
+    document.querySelectorAll(".btn-menos").forEach(btn =>
+        btn.addEventListener("click", () => alterarQtd(Number(btn.dataset.index), -1)));
+    document.querySelectorAll(".btn-mais").forEach(btn =>
+        btn.addEventListener("click", () => alterarQtd(Number(btn.dataset.index), 1)));
 }
 
 /* =============================
    INICIALIZAÇÃO
 ============================= */
 document.addEventListener("DOMContentLoaded", () => {
-
     atualizarContadorCarrinho();
 
     document.getElementById("btnAbrirCarrinho")
         ?.addEventListener("click", abrirCarrinho);
-
     document.getElementById("btnFecharCarrinho")
         ?.addEventListener("click", fecharCarrinho);
-
     document.getElementById("cartOverlay")
         ?.addEventListener("click", fecharCarrinho);
-
     document.querySelector(".btn-finalizar")
         ?.addEventListener("click", finalizarWhatsApp);
-
     document.getElementById("btnLimparCarrinho")
         ?.addEventListener("click", () => {
             carrinho = [];
@@ -251,5 +258,4 @@ document.addEventListener("DOMContentLoaded", () => {
             atualizarContadorCarrinho();
             renderCarrinho();
         });
-
 });

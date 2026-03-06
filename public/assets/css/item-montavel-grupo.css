@@ -1,0 +1,69 @@
+/* item-montavel-grupo.css */
+@import url('./shared-layout.css');
+
+.form-card { max-width: 800px; }
+
+/* ── Grupo card ────────────────────────────────────────────────────── */
+.grupo-card {
+  border: 1.5px solid var(--gray-light); border-radius: 14px;
+  padding: 18px; margin-bottom: 16px; background: #FAFAFA;
+}
+
+.grupo-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.grupo-title-badge {
+  background: var(--purple); color: white;
+  font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px;
+}
+
+.grupo-form-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px; margin-bottom: 12px;
+}
+
+/* ── Opcao rows ────────────────────────────────────────────────────── */
+.opcao-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px; background: var(--white);
+  border: 1px solid var(--gray-light); border-radius: 8px; margin-bottom: 6px;
+}
+
+.btn-remove {
+  width: 30px; height: 30px; border-radius: 7px; border: none;
+  background: #FEE2E2; color: var(--danger); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 13px;
+}
+
+.btn-add-opcao {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 700; color: var(--purple);
+  background: none; border: 2px dashed #C4B5FD;
+  padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: background .15s;
+}
+.btn-add-opcao:hover { background: var(--purple-lighter); }
+
+/* ── Add grupo button ──────────────────────────────────────────────── */
+.btn-add-grupo {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 700; color: var(--purple);
+  background: none; border: 2px dashed var(--purple);
+  padding: 10px 18px; border-radius: 12px; cursor: pointer;
+  width: 100%; justify-content: center;
+  transition: background .15s; margin-bottom: 16px;
+}
+.btn-add-grupo:hover { background: var(--purple-lighter); }
+
+/* ── Checkbox config panel ─────────────────────────────────────────── */
+.checkbox-config {
+  background: #F0FDF4; border: 1px solid #BBF7D0;
+  border-radius: 8px; padding: 12px; margin-bottom: 12px;
+}
+
+.checkbox-config .form-label { color: #065F46; margin-bottom: 8px; }
+
+/* ── Collapse ──────────────────────────────────────────────────────── */
+.grupo-body.collapsed { display: none; }

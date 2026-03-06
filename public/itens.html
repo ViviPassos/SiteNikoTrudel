@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Itens do Menu – Admin Niko Trudel</title>
+  <style>
+    .add-menu {
+      position: relative;
+      display: inline-block;
+    }
+    .add-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%; right: 0;
+      background: #fff;
+      border: 1.5px solid #E5E7EB;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.1);
+      min-width: 220px;
+      z-index: 200;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .add-dropdown.open { display: block; }
+    .add-dropdown a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 16px;
+      text-decoration: none;
+      color: #1E0A3C;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: background .12s;
+      border-bottom: 1px solid #F3F4F6;
+    }
+    .add-dropdown a:last-child { border-bottom: none; }
+    .add-dropdown a:hover { background: #F5F3FF; color: #7C3AED; }
+    .add-dropdown a i { font-size: 15px; color: #7C3AED; }
+
+    .filter-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1.5px solid #E5E7EB;
+      background: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12.5px; font-weight: 700;
+      cursor: pointer; color: #6B7280;
+      transition: all .15s;
+    }
+    .filter-btn.active { background: #7C3AED; color: #fff; border-color: #7C3AED; }
+    .filter-btn:hover:not(.active) { border-color: #7C3AED; color: #7C3AED; }
+
+    .tipo-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 20px;
+    }
+    .tipo-simples { background: #E0F2FE; color: #0369A1; }
+    .tipo-montavel { background: #FEE2E2; color: #991B1B; }
+    .tipo-opcional { background: #FEF3C7; color: #92400E; }
+  </style>
+  <link rel="stylesheet" href="/public/assets/css/itens.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+<body>
+  <div class="layout" id="app"></div>
+
+  <!-- Confirm Delete -->
+  <div class="modal-overlay confirm-modal" id="confirmOverlay">
+    <div class="modal" style="max-width:360px;">
+      <div class="confirm-icon">🗑️</div>
+      <div class="confirm-name" id="confirmName"></div>
+      <div class="confirm-msg" style="margin-top:6px;">Deseja excluir este item? Esta ação não pode ser desfeita.</div>
+      <div class="modal-footer">
+        <button class="btn-outline" id="confirmCancel">Cancelar</button>
+        <button class="btn-primary" id="confirmOk" style="background:#EF4444;">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container"></div>
+
+  <script type="module" src="/public/assets/js/itens.js"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Montável Simples – Admin Niko Trudel</title>
+  <style>
+    .form-card { background:#fff; border-radius:16px; border:1.5px solid #E5E7EB; padding:28px; max-width:720px; }
+    .back-btn { display:inline-flex;align-items:center;gap:6px;color:#6B7280;font-size:13px;font-weight:600;text-decoration:none;margin-bottom:20px;background:none;border:none;cursor:pointer;padding:0;font-family:'Nunito',sans-serif; }
+    .back-btn:hover { color:#7C3AED; }
+    .section-divider { font-size:14px;font-weight:800;color:#1E0A3C;padding:14px 0 8px;border-bottom:2px solid #F3F4F6;margin-bottom:16px; }
+    .opcao-row { display:flex;align-items:center;gap:10px;padding:10px;background:#F7F5EF;border-radius:10px;margin-bottom:8px; }
+    .opcao-row .form-control { margin:0; }
+    .btn-remove { width:32px;height:32px;border-radius:8px;border:none;background:#FEE2E2;color:#EF4444;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+    .btn-add-opcao { display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#7C3AED;background:none;border:2px dashed #C4B5FD;padding:8px 14px;border-radius:10px;cursor:pointer;transition:background .15s; }
+    .btn-add-opcao:hover { background:#F5F3FF; }
+    .loading-overlay { position:fixed;inset:0;background:rgba(255,255,255,.8);display:none;align-items:center;justify-content:center;z-index:999;font-size:15px;font-weight:700;color:#7C3AED;gap:10px; }
+    .loading-overlay.show { display:flex; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .hint { font-size:11px;color:#9CA3AF;margin-top:3px; }
+  </style>
+  <link rel="stylesheet" href="/public/assets/css/item-montavel-simples.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+</head>
+<body>
+  <div class="layout" id="app"></div>
+  <div class="loading-overlay" id="loadingOverlay">
+    <i class="bi bi-arrow-repeat" style="animation:spin 1s linear infinite;font-size:22px;"></i> Salvando...
+  </div>
+  <div class="toast-container"></div>
+
+  <script type="module" src="/public/assets/js/item-montavel-simples.js"></script>
+</body>
+</html>

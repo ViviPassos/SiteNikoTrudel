@@ -1,0 +1,32 @@
+/* item-simples.css */
+@import url('./shared-layout.css');
+
+.form-card { max-width: 640px; }
+
+/* ── Image preview ─────────────────────────────────────────────────── */
+.img-preview {
+  width: 100%; height: 200px; border-radius: 12px;
+  background: var(--cream); border: 2px dashed #D1D5DB;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px; cursor: pointer; overflow: hidden; position: relative;
+  transition: border-color .15s;
+}
+.img-preview:hover { border-color: var(--purple); }
+
+.img-preview img {
+  width: 100%; height: 100%; object-fit: cover;
+  position: absolute; inset: 0;
+}
+
+.img-preview .overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: white; gap: 4px; opacity: 0; transition: opacity .15s;
+}
+.img-preview:hover .overlay { opacity: 1; }
+
+.img-preview > i    { font-size: 32px; color: #9CA3AF; }
+.img-preview > span { font-size: 13px; color: #9CA3AF; font-weight: 600; }

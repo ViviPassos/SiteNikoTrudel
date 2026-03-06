@@ -1,0 +1,27 @@
+/* item-montavel-simples.css */
+@import url('./shared-layout.css');
+
+.form-card { max-width: 720px; }
+
+/* ── Opcao rows ────────────────────────────────────────────────────── */
+.opcao-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px; background: var(--cream);
+  border-radius: 10px; margin-bottom: 8px;
+}
+.opcao-row .form-control { margin: 0; }
+
+.btn-remove {
+  width: 32px; height: 32px; border-radius: 8px; border: none;
+  background: #FEE2E2; color: var(--danger); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.btn-add-opcao {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 700; color: var(--purple);
+  background: none; border: 2px dashed #C4B5FD;
+  padding: 8px 14px; border-radius: 10px; cursor: pointer;
+  transition: background .15s;
+}
+.btn-add-opcao:hover { background: var(--purple-lighter); }

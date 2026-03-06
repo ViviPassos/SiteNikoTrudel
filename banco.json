@@ -444,7 +444,7 @@
       "nome": "Salgadinhos - Monte o Seu",
       "tipo": "montavel",
       "descricao": "Pedido mínimo de 10 unidades por item.",
-      "pedidoMinimo": 10,
+      "pedidoMinimo": 50,
       "ativo": true,
       "grupos": {
         "quantidade": {
@@ -543,7 +543,7 @@
       "nome": "Mini Trudel - Monte o Seu",
       "tipo": "montavel",
       "descricao": "Pedido mínimo de 10 unidades por item.",
-      "pedidoMinimo": 10,
+      "pedidoMinimo": 30,
       "ativo": true,
       "grupos": {
         "quantidade": {
@@ -694,6 +694,7 @@
           "controleQuantidade": true,
           "minimoPorItem": 5,
           "incremento": 5,
+          "maximoSabores": 5,
           "somaDeveFecharQuantidade": true,
           "opcoes": {
             "creme_queijo": {
@@ -779,8 +780,9 @@
           "obrigatorio": true,
           "tipoSelecao": "checkbox",
           "controleQuantidade": true,
-          "minimoPorItem": 10,
-          "incremento": 10,
+          "minimoPorItem": 5,
+          "incremento": 5,
+          "maximoSabores": 5,
           "somaDeveFecharQuantidade": true,
           "opcoes": {
             "50_cacau": {

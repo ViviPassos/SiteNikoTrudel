@@ -1,0 +1,24 @@
+/* categorias.css */
+@import url('./shared-layout.css');
+
+/* ── Category rows ─────────────────────────────────────────────────── */
+.cat-row {
+  display: flex; align-items: center;
+  background: var(--white); border-radius: 12px;
+  border: 1px solid var(--gray-light);
+  padding: 14px 18px; margin-bottom: 8px; gap: 12px;
+  transition: box-shadow .15s;
+}
+.cat-row:hover { box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+
+.drag-handle { color: #CBD5E1; cursor: grab; font-size: 16px; padding: 0 2px; }
+
+.cat-name  { font-size: 14px; font-weight: 700; color: var(--dark); }
+.cat-order { font-size: 12px; color: var(--gray); font-weight: 600; }
+
+.cat-actions { margin-left: auto; display: flex; gap: 6px; }
+
+/* ── Confirm modal ─────────────────────────────────────────────────── */
+.confirm-icon { font-size: 40px; text-align: center; margin-bottom: 8px; }
+.confirm-msg  { text-align: center; font-size: 14px; color: var(--gray); margin-bottom: 4px; }
+.confirm-name { text-align: center; font-weight: 800; font-size: 15px; }

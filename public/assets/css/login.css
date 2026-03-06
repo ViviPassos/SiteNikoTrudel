@@ -1,0 +1,167 @@
+/* login.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --purple:        #7C3AED;
+  --purple-dark:   #6D28D9;
+  --purple-light:  #EDE9FE;
+  --cream:         #F7F5EF;
+  --white:         #FFFFFF;
+  --dark:          #1E0A3C;
+  --gray:          #6B7280;
+  --gray-light:    #E5E7EB;
+  --danger:        #EF4444;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────── */
+.login-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 40px 36px;
+  width: 420px;
+  max-width: 95vw;
+  box-shadow: 0 4px 24px rgba(0,0,0,.06);
+  text-align: center;
+}
+
+.login-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--purple);
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  font-size: 26px; color: white;
+  margin-bottom: 16px;
+}
+
+.login-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--dark);
+}
+
+.login-sub {
+  font-size: 14px;
+  color: var(--gray);
+  margin-bottom: 24px;
+}
+
+/* ── Fields ────────────────────────────────────────────────────────── */
+.login-field {
+  text-align: left;
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.input-wrap { position: relative; }
+
+.input-wrap i.prefix {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: #9CA3AF; font-size: 15px;
+  pointer-events: none;
+}
+
+.input-wrap input {
+  width: 100%;
+  padding: 11px 40px;
+  border: 1.5px solid var(--gray-light);
+  border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  background: var(--cream);
+  color: var(--dark);
+  outline: none;
+  transition: border-color .15s, background .15s;
+}
+
+.input-wrap input:focus {
+  border-color: var(--purple);
+  background: var(--white);
+}
+
+.input-wrap .suffix {
+  position: absolute; right: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: #9CA3AF; font-size: 15px;
+  cursor: pointer; background: none; border: none; padding: 0;
+}
+
+/* ── Error ─────────────────────────────────────────────────────────── */
+.login-error {
+  display: none;
+  color: var(--danger);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+/* ── Button ────────────────────────────────────────────────────────── */
+.btn-login {
+  width: 100%; margin-top: 8px;
+  padding: 12px;
+  background: var(--purple);
+  color: white; border: none; border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px; font-weight: 700;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.btn-login:hover    { background: var(--purple-dark); }
+.btn-login:disabled { opacity: .7; cursor: not-allowed; }
+
+/* ── Back link ─────────────────────────────────────────────────────── */
+.back-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--purple); font-size: 13.5px; font-weight: 700;
+  text-decoration: none; margin-top: 16px;
+}
+
+.back-link:hover { text-decoration: underline; }
+
+/* ── Toast ─────────────────────────────────────────────────────────── */
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px;
+  z-index: 9999; display: flex; flex-direction: column; gap: 8px;
+}
+
+.toast {
+  background: var(--white);
+  border-radius: 12px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  font-size: 13.5px; font-weight: 600;
+  min-width: 240px;
+  animation: toastIn .25s ease;
+  border-left: 4px solid #10B981;
+}
+
+.toast.error { border-left-color: var(--danger); }
+.toast i.success { color: #10B981; }
+.toast i.err     { color: var(--danger); }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
