@@ -2340,6 +2340,7 @@ Portfolio
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center !important;
   /*centraliza o bloco inteiro */
 }
 

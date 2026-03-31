@@ -10,8 +10,8 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --purple:        #7C3AED;
-  --purple-dark:   #6D28D9;
+  --purple:        #631a86;
+  --purple-dark:   #5a1f8c;
   --purple-light:  #EDE9FE;
   --purple-lighter:#F5F3FF;
   --cream:         #F7F5EF;

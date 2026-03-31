@@ -1,0 +1,100 @@
+/* item-montavel-nikofesta.css */
+@import url('./shared-layout.css');
+
+.form-card { max-width: 800px; }
+
+/* ── Grupo card ────────────────────────────────────────────────────── */
+.grupo-card {
+  border: 1.5px solid var(--gray-light); border-radius: 14px;
+  padding: 18px; margin-bottom: 16px; background: #FAFAFA;
+}
+.grupo-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.grupo-title-badge {
+  background: var(--purple); color: white;
+  font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px;
+}
+.grupo-form-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+  gap: 10px; margin-bottom: 12px;
+}
+.grupo-body.collapsed { display: none; }
+
+/* ── Opcoes ─────────────────────────────────────────────────────────── */
+.opcao-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px; background: var(--white);
+  border: 1px solid var(--gray-light); border-radius: 8px; margin-bottom: 6px;
+}
+.btn-remove {
+  width: 30px; height: 30px; border-radius: 7px; border: none;
+  background: #FEE2E2; color: var(--danger); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 13px;
+}
+.btn-icon {
+  width: 30px; height: 30px; border-radius: 7px;
+  border: 1px solid var(--gray-light); background: var(--white);
+  color: #6B7280; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 13px;
+}
+.btn-icon.del { background: #FEE2E2; border-color: #FEE2E2; color: var(--danger); }
+.btn-icon:hover { border-color: var(--purple); color: var(--purple); }
+.btn-add-opcao {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 700; color: var(--purple);
+  background: none; border: 2px dashed #C4B5FD;
+  padding: 6px 12px; border-radius: 8px; cursor: pointer; transition: background .15s;
+}
+.btn-add-opcao:hover { background: var(--purple-lighter); }
+.btn-add-grupo {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 700; color: var(--purple);
+  background: none; border: 2px dashed var(--purple);
+  padding: 10px 18px; border-radius: 12px; cursor: pointer;
+  width: 100%; justify-content: center;
+  transition: background .15s; margin-bottom: 16px;
+}
+.btn-add-grupo:hover { background: var(--purple-lighter); }
+
+/* ── Painéis de config ──────────────────────────────────────────────── */
+.checkbox-config {
+  background: #F0FDF4; border: 1px solid #BBF7D0;
+  border-radius: 8px; padding: 12px; margin-bottom: 12px;
+}
+.checkbox-config .form-label { color: #065F46; margin-bottom: 8px; }
+
+.limite-dinamico-config {
+  background: #FFF7ED; border: 1px solid #FED7AA;
+  border-radius: 8px; padding: 12px; margin-top: 10px;
+}
+.limite-dinamico-config .form-label { color: #92400E; margin-bottom: 8px; }
+.limite-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 6px; font-size: 13px;
+}
+.limite-row label { min-width: 110px; color: #6B7280; }
+.limite-row input { width: 80px; }
+
+/* ── Imagem preview ─────────────────────────────────────────────────── */
+.img-preview {
+  width: 100%; height: 180px; border-radius: 12px;
+  background: #F7F5EF; border: 2px dashed #D1D5DB;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px; cursor: pointer; overflow: hidden;
+  position: relative; transition: border-color .15s;
+}
+.img-preview:hover { border-color: var(--purple); }
+.img-preview img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.img-preview .overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,.45);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: white; gap: 4px; opacity: 0; transition: opacity .15s;
+}
+.img-preview:hover .overlay { opacity: 1; }
+.img-preview i { font-size: 32px; color: #9CA3AF; }
+.img-preview span { font-size: 13px; color: #9CA3AF; font-weight: 600; }

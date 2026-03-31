@@ -1,14 +1,18 @@
 // item-montavel-simples.js
-import { db, ref, get, set, update, requireAuth, logout, showToast, slugify } from './firebase-config.js';
+// Usado para: produtos tipo "opcional" — item com preço fixo + grupo de adicionais
+// Exemplos: Trudel Dog, Brownie avulso com cobertura
+import { db, storage, ref, get, set, update, requireAuth, logout, showToast, slugify } from './firebase-config.js';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-storage.js';
 import { renderSidebar, initSidebarLogout } from './sidebar.js';
 
 const params     = new URLSearchParams(location.search);
 const editKey    = params.get('key');
 let existingData = null;
 let opcoes       = [];
+let imagemPath   = '';
 
 requireAuth().then(() => {
-  const titulo = editKey ? 'Editar Montável Simples' : 'Novo Montável Simples';
+  const titulo = editKey ? 'Editar Item Opcional' : 'Novo Item Opcional';
   document.getElementById('app').innerHTML = renderSidebar('itens') + `
     <div style="flex:1">
       <div class="topbar"><span class="topbar-title">${titulo}</span></div>
@@ -17,7 +21,7 @@ requireAuth().then(() => {
         <div class="section-header" style="margin-bottom:20px;">
           <div>
             <h1 class="page-title">${titulo}</h1>
-            <p class="page-subtitle">Item com opções adicionais simples (ex: Trudel Dog com coberturas)</p>
+            <p class="page-subtitle">Item com preço fixo e grupo de adicionais (ex: Trudel Dog com coberturas)</p>
           </div>
         </div>
         <div class="form-card">
@@ -32,7 +36,7 @@ requireAuth().then(() => {
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Preço base (R$)</label>
+              <label class="form-label">Preço base (R$) *</label>
               <input class="form-control" id="preco" type="number" step="0.01" min="0" placeholder="0.00" />
               <div class="hint">Preço base do item (sem adicionais)</div>
             </div>
@@ -45,10 +49,19 @@ requireAuth().then(() => {
             <label class="form-label">Subcategoria</label>
             <select class="form-control" id="subcategoria"><option value="">Selecione a categoria primeiro</option></select>
           </div>
-          <div class="form-group">
-            <label class="form-label">Ordem de exibição</label>
-            <input class="form-control" id="ordem" type="number" value="0" />
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Ordem de exibição</label>
+              <input class="form-control" id="ordem" type="number" value="0" />
+            </div>
           </div>
+
+          <div class="form-group" style="margin-top:8px;">
+            <label class="form-label">Imagem do produto</label>
+            <input class="form-control" id="imagem" type="file" accept="image/*" />
+            <div id="imagemPreview" style="margin-top:8px;"></div>
+          </div>
+
           <div class="form-toggle-row">
             <span class="form-toggle-label">Disponível</span>
             <label class="toggle"><input type="checkbox" id="ativo" checked /><span class="toggle-slider"></span></label>
@@ -59,6 +72,7 @@ requireAuth().then(() => {
           </div>
 
           <div class="section-divider" style="margin-top:24px;"><i class="bi bi-plus-square"></i> Grupo de Adicionais</div>
+          <p class="hint" style="margin-bottom:12px;">Opções que o cliente pode escolher ao pedir (ex: coberturas, extras).</p>
           <div class="form-row" style="margin-bottom:12px;">
             <div class="form-group">
               <label class="form-label">Título do grupo</label>
@@ -89,14 +103,16 @@ requireAuth().then(() => {
   document.getElementById('btnBack').addEventListener('click', () => history.back());
   document.getElementById('btnCancel').addEventListener('click', () => history.back());
   document.getElementById('categoria').addEventListener('change', loadSubcats);
-  document.getElementById('btnAddOpcao').addEventListener('click', () => { addOpcao(); });
+  document.getElementById('btnAddOpcao').addEventListener('click', addOpcao);
   document.getElementById('btnSalvar').addEventListener('click', salvar);
+  document.getElementById('imagem').addEventListener('change', previewImagem);
 
   loadCats();
   if (editKey) loadItem();
   else addOpcao();
 });
 
+// ── Firebase helpers ──────────────────────────────────────────────────────────
 function loadCats() {
   get(ref(db, 'categorias')).then(snap => {
     const sel = document.getElementById('categoria');
@@ -122,7 +138,7 @@ function loadSubcats() {
 }
 
 function loadItem() {
-  get(ref(db, `produtos/${editKey}`)).then(snap => {
+  get(ref(db, `produtos/${editKey}`)).then(async snap => {
     existingData = snap.val();
     if (!existingData) return;
     document.getElementById('nome').value       = existingData.nome      || '';
@@ -131,6 +147,16 @@ function loadItem() {
     document.getElementById('ordem').value      = existingData.ordem     || 0;
     document.getElementById('ativo').checked    = existingData.ativo !== false;
     document.getElementById('destaque').checked = !!existingData.destaque;
+
+    imagemPath = existingData.imagemPath || existingData.imagem || '';
+    if (imagemPath) {
+      try {
+        const url = await getDownloadURL(storageRef(storage, imagemPath));
+        document.getElementById('imagemPreview').innerHTML =
+          `<img src="${url}" style="max-height:120px;border-radius:8px;" />`;
+      } catch { /* sem preview */ }
+    }
+
     const firstGroup = Object.values(existingData.grupos || {})[0];
     if (firstGroup) {
       document.getElementById('grupoTitulo').value      = firstGroup.titulo || '';
@@ -138,17 +164,39 @@ function loadItem() {
       document.getElementById('opcoesContainer').innerHTML = '';
       opcoes = [];
       Object.entries(firstGroup.opcoes || {}).forEach(([k, op]) => {
-        opcoes.push({ key: k, nome: op.nome, preco: op.preco }); renderOpcao(opcoes.length - 1);
+        opcoes.push({ key: k, nome: op.nome, preco: op.preco || 0 });
+        renderOpcao(opcoes.length - 1);
       });
     }
     if (document.getElementById('categoria').options.length > 1) {
-      document.getElementById('categoria').value = existingData.categoria || ''; loadSubcats();
+      document.getElementById('categoria').value = existingData.categoria || '';
+      loadSubcats();
     }
   });
 }
 
+// ── Imagem ────────────────────────────────────────────────────────────────────
+function previewImagem(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  document.getElementById('imagemPreview').innerHTML =
+    `<img src="${url}" style="max-height:120px;border-radius:8px;" />`;
+}
+
+async function uploadImagem(prodKey) {
+  const file = document.getElementById('imagem').files[0];
+  if (!file) return imagemPath;
+  const path = `produtos/${prodKey}/${Date.now()}_${file.name}`;
+  const sRef = storageRef(storage, path);
+  await uploadBytes(sRef, file);
+  return path;
+}
+
+// ── Opções ────────────────────────────────────────────────────────────────────
 function addOpcao() {
-  opcoes.push({ key: '', nome: '', preco: 0 }); renderOpcao(opcoes.length - 1);
+  opcoes.push({ key: '', nome: '', preco: 0 });
+  renderOpcao(opcoes.length - 1);
 }
 
 function renderOpcao(idx) {
@@ -171,6 +219,7 @@ function removeOpcao(idx) {
   opcoes.forEach((_, i) => renderOpcao(i));
 }
 
+// ── Save ──────────────────────────────────────────────────────────────────────
 async function salvar() {
   const nome = document.getElementById('nome').value.trim();
   if (!nome) { showToast('Nome é obrigatório.', 'error'); return; }
@@ -178,37 +227,42 @@ async function salvar() {
   const opcsObj = {};
   opcoes.forEach(op => {
     if (!op.nome.trim()) return;
-    opcsObj[op.key || `${slugify(op.nome)}_${Date.now()}`] = { nome: op.nome, preco: op.preco || 0 };
+    opcsObj[op.key || slugify(op.nome)] = { nome: op.nome, preco: op.preco || 0 };
   });
 
+  const prodKey    = editKey || `${slugify(nome)}_${Date.now()}`;
   const subcategoria = document.getElementById('subcategoria').value || null;
-  const data = {
-    nome,
-    descricao:   document.getElementById('descricao').value.trim(),
-    preco:       parseFloat(document.getElementById('preco').value) || 0,
-    categoria:   document.getElementById('categoria').value,
-    ordem:       parseInt(document.getElementById('ordem').value) || 0,
-    ativo:       document.getElementById('ativo').checked,
-    destaque:    document.getElementById('destaque').checked,
-    tipo:        'opcional',
-    ...(subcategoria && { subcategoria }),
-    grupos: {
-      adicional: {
-        titulo:      document.getElementById('grupoTitulo').value.trim() || 'Adicionais',
-        ordem:       1,
-        obrigatorio: document.getElementById('grupoObrigatorio').value === 'true',
-        tipoSelecao: 'radio',
-        opcoes:      opcsObj
-      }
-    }
-  };
 
   document.getElementById('loadingOverlay').classList.add('show');
   try {
+    const novaImagem = await uploadImagem(prodKey);
+    const data = {
+      nome,
+      descricao:   document.getElementById('descricao').value.trim(),
+      preco:       parseFloat(document.getElementById('preco').value) || 0,
+      categoria:   document.getElementById('categoria').value,
+      ordem:       parseInt(document.getElementById('ordem').value) || 0,
+      ativo:       document.getElementById('ativo').checked,
+      destaque:    document.getElementById('destaque').checked,
+      tipo:        'opcional',
+      ...(novaImagem  && { imagemPath: novaImagem }),
+      ...(subcategoria && { subcategoria }),
+      grupos: {
+        adicional: {
+          titulo:      document.getElementById('grupoTitulo').value.trim() || 'Adicionais',
+          ordem:       1,
+          obrigatorio: document.getElementById('grupoObrigatorio').value === 'true',
+          tipoSelecao: 'radio',
+          opcoes:      opcsObj
+        }
+      }
+    };
+
     if (editKey) await update(ref(db, `produtos/${editKey}`), data);
-    else         await set(ref(db, `produtos/${slugify(nome)}_${Date.now()}`), data);
+    else         await set(ref(db, `produtos/${prodKey}`), data);
     window.location.href = 'itens.html?toast=' + encodeURIComponent('Item salvo com sucesso!');
-  } catch {
+  } catch (err) {
+    console.error(err);
     showToast('Erro ao salvar.', 'error');
     document.getElementById('loadingOverlay').classList.remove('show');
   }

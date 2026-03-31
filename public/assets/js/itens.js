@@ -28,6 +28,7 @@ requireAuth().then(() => {
               <a href="item-simples.html"><i class="bi bi-card-image"></i> Item Simples (Card)</a>
               <a href="item-montavel-simples.html"><i class="bi bi-sliders"></i> Montável Simples</a>
               <a href="item-montavel-grupo.html"><i class="bi bi-collection"></i> Montável com Grupos</a>
+              <a href="item-montavel-nikofesta.html"><i class="bi bi-balloon"></i> Niko Festas</a>
             </div>
           </div>
         </div>
@@ -145,11 +146,13 @@ function renderItems() {
 
   document.getElementById('itemList').innerHTML = filtered.map(([key, item]) => {
     const catNome    = allCats[item.categoria]?.nome || item.categoria || '–';
-    const tipoBadge  = item.tipo === 'montavel'
-      ? '<span class="tipo-badge tipo-montavel">Montável</span>'
-      : item.tipo === 'opcional'
-        ? '<span class="tipo-badge tipo-opcional">Opcional</span>'
-        : '<span class="tipo-badge tipo-simples">Simples</span>';
+    const tipoBadge  = item.tipo === 'montavel' && item.subtipo === 'festa'
+      ? '<span class="tipo-badge tipo-festa">Festa</span>'
+      : item.tipo === 'montavel'
+        ? '<span class="tipo-badge tipo-montavel">Montável</span>'
+        : item.tipo === 'opcional'
+          ? '<span class="tipo-badge tipo-opcional">Opcional</span>'
+          : '<span class="tipo-badge tipo-simples">Simples</span>';
 
     return `
       <div class="table-row items-cols">
@@ -175,7 +178,7 @@ function renderItems() {
           </label>
         </div>
         <div class="actions-cell">
-          <button class="btn-icon edit" data-key="${key}" data-tipo="${item.tipo || 'simples'}">
+          <button class="btn-icon edit" data-key="${key}" data-tipo="${item.tipo || 'simples'}" data-subtipo="${item.subtipo || ''}">
             <i class="bi bi-pencil"></i>
           </button>
           <button class="btn-icon del" data-key="${key}" data-nome="${item.nome || 'item'}">
@@ -192,16 +195,17 @@ function renderItems() {
       update(ref(db, `produtos/${chk.dataset.key}`), { ativo: chk.checked })));
 
   document.querySelectorAll('.actions-cell .edit').forEach(btn =>
-    btn.addEventListener('click', () => editItem(btn.dataset.key, btn.dataset.tipo)));
+    btn.addEventListener('click', () => editItem(btn.dataset.key, btn.dataset.tipo, btn.dataset.subtipo)));
 
   document.querySelectorAll('.actions-cell .del').forEach(btn =>
     btn.addEventListener('click', () => askDelete(btn.dataset.key, btn.dataset.nome)));
 }
 
-function editItem(key, tipo) {
-  if (tipo === 'montavel')      window.location.href = `item-montavel-grupo.html?key=${key}`;
-  else if (tipo === 'opcional') window.location.href = `item-montavel-simples.html?key=${key}`;
-  else                          window.location.href = `item-simples.html?key=${key}`;
+function editItem(key, tipo, subtipo) {
+  if (tipo === 'montavel' && subtipo === 'festa') window.location.href = `item-montavel-nikofesta.html?key=${key}`;
+  else if (tipo === 'montavel')                   window.location.href = `item-montavel-grupo.html?key=${key}`;
+  else if (tipo === 'opcional')                   window.location.href = `item-montavel-simples.html?key=${key}`;
+  else                                            window.location.href = `item-simples.html?key=${key}`;
 }
 
 function askDelete(key, nome) {
